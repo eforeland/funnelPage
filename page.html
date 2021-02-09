@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Funnel Test Page</title>
+</head>
+<body>
+  <a href="https://www.google.com" id="nextPage">Link to next page in the funnel (defaults to google.com if no link param in the page URL)</a>
+  <script>
+    const nextPage = document.getElementById('nextPage');
+    const urlParams = new URLSearchParams(window.location.search);
+    if (nextPage && urlParams.has('link')) {
+      nextPage.href = urlParams.get('link');
+    }
+  </script>
+</body>
+</html>
