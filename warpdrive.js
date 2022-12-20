@@ -150,8 +150,8 @@
   function handleRouting(args) {
     urlQuery = new URLSearchParams(window.location);
     const warpdriveID = urlQuery.get('warpdrive');
-    console.log('routing', args);
-    if (!warpdriveID) return;
+    console.log('routing', args, warpdriveID);
+//     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
     funnelID = getFunnelID();
