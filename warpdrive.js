@@ -152,6 +152,8 @@
     const warpdriveID = urlQuery.get('warpdrive');
     console.log('routing', args);
     console.log('urlQuery', urlQuery);
+    urlQuery = new URLSearchParams(window.location.search);
+    console.log(urlQuery);
 //     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
