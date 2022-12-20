@@ -18,6 +18,7 @@
           'Access-Control-Allow-Origin':'*'
         }
       });
+      console.log(res);
       const jsonRes = await res.json();
       return jsonRes;
     } catch (err) {
@@ -37,6 +38,7 @@
           'Access-Control-Allow-Origin':'*'
         }
       });
+      console.log(res);
       const jsonRes = await res.json();
       return jsonRes;
     } catch (err) {
@@ -139,7 +141,7 @@
   }
 
   function handleConfig(args) {
-     console.log('config', args);
+     // console.log('config', args);
     switch (args[1]) {
       case 'domain': domain = args[2]
       case 'interceptor': updateInterceptor(args[2])
@@ -148,12 +150,11 @@
   }
 
   function handleRouting(args) {
-    urlQuery = new URLSearchParams(window.location.href);
-    const warpdriveID = urlQuery.get('warpdrive');
-    console.log('routing', args);
-    console.log('urlQuery', urlQuery);
     urlQuery = new URLSearchParams(window.location.search);
-    console.log(urlQuery);
+    const warpdriveID = urlQuery.get('warpdrive');
+    // console.log('routing', args);
+    urlQuery = new URLSearchParams(window.location.search);
+    console.log(window.location.search, urlQuery);
 //     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
