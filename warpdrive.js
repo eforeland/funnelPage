@@ -150,11 +150,10 @@
   }
 
   function handleRouting(args) {
-    urlQuery = new URLSearchParams(window.location.search);
-    const warpdriveID = urlQuery.get('warpdrive');
-    // console.log('routing', args);
-    urlQuery = new URLSearchParams(window.location.search);
-    console.log(window.location.search, urlQuery);
+    urlQuery = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
+    console.log(window.location.search, urlQuery, args);
 //     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
