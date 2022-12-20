@@ -151,7 +151,7 @@
     urlQuery = new URLSearchParams(window.location);
     const warpdriveID = urlQuery.get('warpdrive');
     console.log('routing', args);
-    console.log('warpdriveID', warpdriveID);
+    console.log('urlQuery', urlQuery);
 //     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
