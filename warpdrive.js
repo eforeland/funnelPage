@@ -155,7 +155,7 @@
 //     });
     
     urlQuery = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('warpdrive');
+    const myParam = urlQuery.get('warpdrive');
     console.log('args: ', args);
     console.log('urlQuery: ', urlQuery, myParam);
 //     if (!warpdriveID) return;
