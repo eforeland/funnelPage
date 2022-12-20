@@ -139,6 +139,7 @@
   }
 
   function handleConfig(args) {
+     console.log('config', args);
     switch (args[1]) {
       case 'domain': domain = args[2]
       case 'interceptor': updateInterceptor(args[2])
@@ -149,6 +150,7 @@
   function handleRouting(args) {
     urlQuery = new URLSearchParams(window.location);
     const warpdriveID = urlQuery.get('warpdrive');
+    console.log('routing', args);
     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
