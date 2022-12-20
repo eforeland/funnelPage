@@ -1,23 +1,24 @@
 !function () {
-  var domain = '';
-  var visitID;
-  var visitorID;
-  var funnelID;
-  var searchParams;
-  var newRoute;
+  const domain = '';
+  let visitID;
+  let visitorID;
+  let funnelID;
+  let urlQuery;
+  let newRoute;
 
   async function getRoute() {
     // call API to get routing URL
-    var url = 'http://dev.rubix.traffic/api/'
+    const url = 'http://dev.rubix.traffic/api/'
     + funnelID + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
     try {
-      var res = await fetch(url, {
+      const res = await fetch(url, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin':'*'
         }
       });
-      var jsonRes = await res.json();
+      const jsonRes = await res.json();
       return jsonRes;
     } catch (err) {
       // Do Nothing
@@ -26,16 +27,17 @@
 
   async function recoverVisitor() {
     // API call to validate visitorID or create new one
-    var url = 'http://dev.rubix.traffic/api/visitor'
+    const url = 'http://dev.rubix.traffic/api/visitor'
     + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
     try {
-      var res = await fetch(url, {
+      const res = await fetch(url, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin':'*'
         }
       });
-      var jsonRes = await res.json();
+      const jsonRes = await res.json();
       return jsonRes;
     } catch (err) {
       // Do Nothing
@@ -43,24 +45,24 @@
   }
 
   function getVisitorID() {
-    var urlVisitorIDMatches = searchParams.get('visitorID');
+    const urlVisitorIDMatches = urlQuery.get('visitorID');
     if (urlVisitorIDMatches) return urlVisitorIDMatches;
   
-    var cookieMatches = document.cookie.match(/(?:^|; ?)WRPDRV_VISITOR=([^;]+)/);
+    const cookieMatches = document.cookie.match(/(?:^|; ?)WRPDRV_VISITOR=([^;]+)/);
     if (cookieMatches) return cookieMatches[1];
   
-    var storageMatches = localStorage.getItem('visitorID');
+    const storageMatches = localStorage.getItem('visitorID');
     if (storageMatches) return storageMatches;
   }
   
   function getVisitID() {
-    var urlVisitIDMatches = searchParams.get('visitID');
+    const urlVisitIDMatches = urlQuery.get('visitID');
     if (urlVisitIDMatches) return urlVisitIDMatches;
   
-    var cookieMatches = document.cookie.match(/(?:^|; ?)WRPDRV_VISIT=([^;]+)/);
+    const cookieMatches = document.cookie.match(/(?:^|; ?)WRPDRV_VISIT=([^;]+)/);
     if (cookieMatches) return cookieMatches[1];
   
-    var storageMatches = localStorage.getItem('visitID');
+    const storageMatches = localStorage.getItem('visitID');
     if (storageMatches) return storageMatches;
   }
 
@@ -70,7 +72,7 @@
   }
 
   function setCookies(domain) {
-    var expires = new Date(Date.now() + 30 * 864e5);
+    const expires = new Date(Date.now() + 30 * 864e5);
     document.cookie = "WRPDRV_VISITOR="
       + visitID 
       + '; expires=' 
@@ -87,16 +89,16 @@
 
   function setCookieDomain(cookieDomain) {
     //set cookie on the broadest possible domain
-    var splitHostname = window.location.hostname.split('.');
-    for (var i = splitHostname.length - 2; i >= 0; i--) {
-      var currentCookieHost = splitHostname.slice(i).join('.');
+    const splitHostname = window.location.hostname.split('.');
+    for (let i = splitHostname.length - 2; i >= 0; i--) {
+      let currentCookieHost = splitHostname.slice(i).join('.');
       setCookies(currentCookieHost)
       if (document.cookie.indexOf('RBX_VISIT='+visitID) !== -1) break;
     }
   }
 
   function getFunnelID() {
-    var urlFunnelIDMatches = searchParams.get('warproute');
+    const urlFunnelIDMatches = urlQuery.get('warproute');
     if (urlFunnelIDMatches) return urlFunnelIDMatches;
   }
 
@@ -113,18 +115,18 @@
   }
 
   function updateInterceptor(interceptor) {
-    var type = interceptor.type;
+    const type = interceptor.type;
 
     if (type === 'click') {
       if (interceptor.selectors.length) {
         interceptor.selectors.forEach(selector => {
-          var elements = document.querySelectorAll(selector)
+          const elements = document.querySelectorAll(selector)
           elements.forEach(e => {
             e.addEventListener("click", interceptClick());
           });
         });
       } else {
-        var elements = document.querySelectorAll("warplink");
+        const elements = document.querySelectorAll("warplink");
         elements.forEach(e => {
           e.addEventListener("click", interceptClick());
         });
@@ -145,13 +147,15 @@
   }
 
   function handleRouting(args) {
-    searchParams = new URLSearchParams(window.location);
+    urlQuery = new URLSearchParams(window.location);
+    const warpdriveID = urlQuery.get('warpdrive');
+    if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
     funnelID = getFunnelID();
   
     if (!visitID || !visitorID) {
-      var res = recoverVisitor()
+      const res = recoverVisitor()
       visitorID = res.visitor;
       visitID = res.visit;
     }
@@ -168,6 +172,7 @@
   }
 
   function warpdrive(args) {
+    console.log(args);
     if (args[0] === 'config') handleConfig(args);
     if (args[0] === 'route') handleRouting(args);
   }
