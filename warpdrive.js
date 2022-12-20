@@ -148,7 +148,7 @@
   }
 
   function handleRouting(args) {
-    urlQuery = new URLSearchParams(window.location);
+    urlQuery = new URLSearchParams(window.location.href);
     const warpdriveID = urlQuery.get('warpdrive');
     console.log('routing', args);
     console.log('urlQuery', urlQuery);
