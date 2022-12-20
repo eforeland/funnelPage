@@ -67,8 +67,8 @@
   }
 
   function setLocalStorage() {
-    localStorage.set('visitorID', visitorID);
-    localStorage.set('visitID', visitID);
+    localStorage.setItem('visitorID', visitorID);
+    localStorage.setItem('visitID', visitID);
   }
 
   function setCookies(domain) {
