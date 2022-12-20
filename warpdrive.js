@@ -150,7 +150,8 @@
   function handleRouting(args) {
     urlQuery = new URLSearchParams(window.location);
     const warpdriveID = urlQuery.get('warpdrive');
-    console.log('routing', args, warpdriveID);
+    console.log('routing', args);
+    console.log('warpdriveID', warpdriveID);
 //     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
@@ -174,7 +175,6 @@
   }
 
   function warpdrive(args) {
-    console.log(args);
     if (args[0] === 'config') handleConfig(args);
     if (args[0] === 'route') handleRouting(args);
   }
