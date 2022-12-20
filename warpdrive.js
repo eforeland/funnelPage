@@ -155,9 +155,8 @@
 //     });
     
     urlQuery = new URLSearchParams(window.location.search);
-    const myParam = urlQuery.get('warpdrive');
-    console.log('args: ', args);
-    console.log('urlQuery: ', urlQuery, myParam);
+    const warproute = urlQuery.get('warproute');
+    console.log('warproute: ', warproute);
 //     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
