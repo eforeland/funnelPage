@@ -1,19 +1,17 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Funnel CORS Test</title>
+  <title>Client Side Routing Test</title>
 </head>
 <body>
   <h1>Step 2</h1>
-  <!---<a href="https://mywebsite.store.ca/f/ebdae8e9-1b19-4331-bc52-675855a79fa2/1">error link</a>--->
   <a href="https://google.ca" id='warpdrive'>next page (google)</a>
 <script type="text/javascript">
-  import warpdrive.js;
   !function(w,r,p,d,v){
-  if(r[b])return;r[b]=[];r.warpdrive=function(){
-  r[b].push(arguments)};x=u.createElement('script');
-  x.async=!0;x.src=warpdrive.js;
-  u.head.appendChild(x)}(window,document,'wrpdv');
+  if(w[p])return;w[p]=[];w.warpdrive=function(){
+  w[p].push(arguments)};v=r.createElement('script');
+  v.async=!0;v.src="warpdrive.js";
+  r.head.appendChild(v)}(window,document,'wrpdv');
 
   warpdrive('config', 'get.rubix.click', 'testID');
 </script>
