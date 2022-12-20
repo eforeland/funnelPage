@@ -8,7 +8,7 @@
 
   async function getRoute() {
     // call API to get routing URL
-    const url = 'http://dev.rubix.traffic/api/'
+    const url = 'https://dev.rubix.traffic/api/'
     + funnelID + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
     try {
       const res = await fetch(url, {
@@ -27,7 +27,7 @@
 
   async function recoverVisitor() {
     // API call to validate visitorID or create new one
-    const url = 'http://dev.rubix.traffic/api/visitor'
+    const url = 'https://dev.rubix.traffic/api/visitor'
     + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
     try {
       const res = await fetch(url, {
