@@ -1,4 +1,5 @@
 !function () {
+  let pending = [];
   const domain = '';
   let visitID;
   let visitorID;
