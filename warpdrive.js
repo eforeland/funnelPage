@@ -14,11 +14,9 @@
     try {
       const res = await fetch(url, {
         method: 'GET',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'*',
-          'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
         }
       });
       console.log(res);
@@ -36,11 +34,9 @@
     try {
       const res = await fetch(url, {
         method: 'GET',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'*',
-          'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
         }
       });
       console.log(res);
