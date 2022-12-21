@@ -25,7 +25,7 @@
       const jsonRes = await res.json();
       return jsonRes;
     } catch (err) {
-      // Do Nothing
+      console.log(err);
     }
   }
 
@@ -47,7 +47,7 @@
       const jsonRes = await res.json();
       return jsonRes;
     } catch (err) {
-      // Do Nothing
+      console.log(err);
     }
   }
 
