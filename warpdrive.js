@@ -8,7 +8,7 @@
 
   async function getRoute() {
     // call API to get routing URL
-    const url = 'https://dev.rubix.traffic/api/'
+    const url = 'https://dev-traffic.rubix.click/api/'
     + funnelID + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
     try {
       const res = await fetch(url, {
@@ -28,7 +28,7 @@
 
   async function recoverVisitor() {
     // API call to validate visitorID or create new one
-    const url = 'https://dev.rubix.traffic/api/visitor'
+    const url = 'https://dev-traffic.rubix.click/api/visitor'
     + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
     try {
       const res = await fetch(url, {
@@ -173,17 +173,30 @@
     newRoute = getRoute();
   }
   
+  function handleConfig(queue) {
+    queue.forEach(args => {
+      if (args[1] === 'domain') domain = args[2]
+      if (args[1] === 'interceptor') updateInterceptor(args[2])
+    })
+  }
+
+  function handleAPI(args) {
+    if (args[0] === 'config') {
+      pending.push(args);
+      return;
+    }
+    else {
+      handleConfig(pending);
+      handleRouting();
+    }
+  }
+  
   function processQueue(queue) {
     while (queue.length > 0) {
-      warpdrive(queue.shift());
+      handleAPI(queue.shift());
     }
   }
 
-  function warpdrive(args) {
-    if (args[0] === 'config') handleConfig(args);
-    if (args[0] === 'route') handleRouting(args);
-  }
-
-  window.warpdrive = function () { warpdrive(arguments); };
+  window.warpdrive = function () { handleAPI(arguments); };
   processQueue(window.wrpdv);
 }();
