@@ -21,8 +21,7 @@
         }
       });
       console.log(res);
-      const jsonRes = await res.json();
-      return jsonRes;
+      return res;
     } catch (err) {
       console.log(err);
     }
@@ -41,8 +40,7 @@
         }
       });
       console.log(res);
-      const jsonRes = await res.json();
-      return jsonRes;
+      return res;
     } catch (err) {
       console.log(err);
     }
