@@ -151,7 +151,7 @@
   
   }
 
-  function handleRouting(args) {
+  async function handleRouting(args) {
 //     urlQuery = new Proxy(new URLSearchParams(window.location.search), {
 //       get: (searchParams, prop) => searchParams.get(prop),
 //     });
@@ -164,7 +164,7 @@
     funnelID = getFunnelID();
     console.log(visitID, visitorID)
     if (!visitID || !visitorID || visitID === 'undefined' || visitorID === 'undefined') {
-      const res = recoverVisitor()
+      const res = await recoverVisitor();
       console.log(res)
       visitorID = res.visitorID;
       visitID = res.visitID;
@@ -172,7 +172,7 @@
     setLocalStorage();
     setCookieDomain();
   
-    newRoute = getRoute();
+    newRoute = await getRoute();
   }
   
   function handleConfig(queue) {
