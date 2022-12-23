@@ -158,12 +158,11 @@
     
     urlQuery = new URLSearchParams(window.location.search);
     const warproute = urlQuery.get('warproute');
-    console.log('warproute: ', warproute);
 //     if (!warpdriveID) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
     funnelID = getFunnelID();
-  
+    console.log(visitID, visitorID)
     if (!visitID || !visitorID) {
       const res = recoverVisitor()
       visitorID = res.visitor;
