@@ -29,7 +29,7 @@
 
   async function recoverVisitor() {
     // API call to validate visitorID or create new one
-    const url = 'https://dev-traffic.rubix.click/api/visitor'
+    const url = 'https://dev-traffic.rubix.click/recoverVisitor'
     + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
     try {
       const res = await fetch(url, {
