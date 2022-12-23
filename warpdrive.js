@@ -21,6 +21,9 @@
         }
       });
       const jsonRes = await res.body.json();
+      const jsonres2 = res.json();
+      console.log(jsonRes)
+      console.log('2: ', jsonres2)
       return jsonRes;
     } catch (err) {
       console.log(err);
@@ -40,7 +43,9 @@
         }
       });
       const jsonRes = await res.body.json();
-      return jsonRes;
+      const jsonres2 = res.json();
+      console.log(jsonRes)
+      console.log('2: ', jsonres2)
     } catch (err) {
       console.log(err);
     }
