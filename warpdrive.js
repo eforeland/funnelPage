@@ -165,6 +165,7 @@
     console.log(visitID, visitorID)
     if (!visitID || !visitorID || visitID === 'undefined' || visitorID === 'undefined') {
       const res = recoverVisitor()
+      console.log(res)
       visitorID = res.visitorID;
       visitID = res.visitID;
     }
