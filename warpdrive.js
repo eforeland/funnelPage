@@ -161,7 +161,7 @@
     visitorID = getVisitorID();
     funnelID = getFunnelID();
     console.log(visitID, visitorID)
-    if (!visitID || !visitorID) {
+    if (!visitID || !visitorID || visitID === 'undefined' || visitorID === 'undefined) {
       const res = recoverVisitor()
       visitorID = res.visitor;
       visitID = res.visit;
