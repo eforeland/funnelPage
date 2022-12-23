@@ -20,10 +20,8 @@
           'Access-Control-Allow-Origin':'*'
         }
       });
-      const jsonRes = await res.body.json();
-      const jsonres2 = res.json();
+      const jsonRes = await res.json();
       console.log(jsonRes)
-      console.log('2: ', jsonres2)
       return jsonRes;
     } catch (err) {
       console.log(err);
@@ -42,10 +40,9 @@
           'Access-Control-Allow-Origin':'*'
         }
       });
-      const jsonRes = await res.body.json();
-      const jsonres2 = res.json();
+      const jsonRes = await res.json();
       console.log(jsonRes)
-      console.log('2: ', jsonres2)
+      return jsonRes;
     } catch (err) {
       console.log(err);
     }
