@@ -20,8 +20,8 @@
           'Access-Control-Allow-Origin':'*'
         }
       });
-      console.log(res);
-      return res;
+      const jsonRes = await res.body.json();
+      return jsonRes;
     } catch (err) {
       console.log(err);
     }
@@ -39,8 +39,8 @@
           'Access-Control-Allow-Origin':'*'
         }
       });
-      console.log(res);
-      return res;
+      const jsonRes = await res.body.json();
+      return jsonRes;
     } catch (err) {
       console.log(err);
     }
