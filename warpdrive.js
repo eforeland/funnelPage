@@ -22,7 +22,7 @@
       });
       const jsonRes = await res.json();
       console.log(jsonRes)
-      return jsonRes;
+      return jsonRes.url;
     } catch (err) {
       console.log(err);
     }
