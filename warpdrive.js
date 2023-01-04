@@ -107,8 +107,8 @@
   }
 
   function interceptClick() {
-    console.log('intercept method')
-    if (true) {
+    console.log('intercept method', newRoute);
+    if (false) {
       window.location.href = newRoute;
     }
   }
