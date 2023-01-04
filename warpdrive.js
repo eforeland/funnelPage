@@ -119,6 +119,7 @@
   }
 
   function updateInterceptor(interceptor) {
+    console.log('interceptor', interceptor);
     const type = interceptor.type;
 
     if (type === 'click') {
