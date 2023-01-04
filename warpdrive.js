@@ -107,6 +107,7 @@
   }
 
   function interceptClick() {
+    console.log('intercept method')
     if (true) {
       window.location.href = newRoute;
     }
@@ -128,6 +129,7 @@
           const elements = document.querySelectorAll(selector)
           elements.forEach(e => {
             e.addEventListener("click", interceptClick());
+            console.log(e);
           });
         });
       } else {
