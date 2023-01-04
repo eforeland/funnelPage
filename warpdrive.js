@@ -120,13 +120,14 @@
   }
 
   function updateInterceptor(interceptor) {
-    console.log('interceptor', interceptor);
     const type = interceptor.type;
 
     if (type === 'click') {
       if (interceptor.selectors.length) {
+        console.log(interceptor.selectors);
         interceptor.selectors.forEach(selector => {
           const elements = document.querySelectorAll(selector)
+          console.log(elements);
           elements.forEach(e => {
             e.addEventListener("click", interceptClick());
             console.log(e);
