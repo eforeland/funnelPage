@@ -109,13 +109,13 @@
   function interceptClick() {
     console.log(pending.length, newRoute)
     if (pending.length) return
-    if (true) {
+    if (newRoute) {
       window.location.href = newRoute;
     }
   }
 
   function interceptRedirect() {
-    if (true) {
+    if (newRoute) {
       window.location.href = newRoute;
     }
   }
