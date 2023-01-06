@@ -1,4 +1,4 @@
-!function () {
+!async function () {
   let pending = [];
   const domain = '';
   let visitID;
