@@ -131,7 +131,7 @@
           const elements = document.querySelectorAll(selector)
           console.log(elements);
           elements.forEach(e => {
-            e.addEventListener("click", interceptClick());
+            e.addEventListener("click", interceptClick);
             console.log(e);
           });
         });
