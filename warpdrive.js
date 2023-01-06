@@ -196,6 +196,7 @@
       handleConfig(pending);
       handleRouting();
     }
+    console.log('new route: ', newRoute);
   }
   
   function processQueue(queue) {
