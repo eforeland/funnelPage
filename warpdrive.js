@@ -109,7 +109,7 @@
 
   function interceptClick() {
     console.log(pending.length, newRoute)
-    if (pending.length) return
+    // if (pending.length) return
     if (newRoute) {
       window.location.href = newRoute;
     }
