@@ -22,7 +22,8 @@
       });
       const jsonRes = await res.json();
       console.log(jsonRes)
-      return jsonRes.url;
+      newRoute = jsonRes.url;
+      // return jsonRes.url;
     } catch (err) {
       console.log(err);
     }
@@ -177,7 +178,7 @@
     setLocalStorage();
     setCookieDomain();
     console.log('before getroute');
-    newRoute = await getRoute();
+    await getRoute();
     console.log('after get route', newRoute);
   }
   
@@ -188,24 +189,24 @@
     })
   }
 
-  function handleAPI(args) {
+  async function handleAPI(args) {
     if (args[0] === 'config') {
       pending.push(args);
       return;
     }
     else {
       handleConfig(pending);
-      handleRouting();
+      await handleRouting();
     }
     console.log('new route: ', newRoute);
   }
   
-  function processQueue(queue) {
+  async function processQueue(queue) {
     while (queue.length > 0) {
-      handleAPI(queue.shift());
+      await handleAPI(queue.shift());
     }
   }
 
-  window.warpdrive = function () { handleAPI(arguments); };
-  processQueue(window.wrpdv);
+  window.warpdrive = async function () { await handleAPI(arguments); };
+  await processQueue(window.wrpdv);
 }();
