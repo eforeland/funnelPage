@@ -176,8 +176,9 @@
     }
     setLocalStorage();
     setCookieDomain();
-  
+    console.log('before getroute');
     newRoute = await getRoute();
+    console.log('after get route', newRoute);
   }
   
   function handleConfig(queue) {
