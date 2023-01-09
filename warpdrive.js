@@ -6,11 +6,12 @@
   let funnelID;
   let urlQuery;
   let newRoute;
+  const step;
 
   async function getRoute() {
     // call API to get routing URL
     const url = 'https://dev-traffic.rubix.click/api/'
-    + funnelID + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
+    + funnelID + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID + '?step=' + (step || 0);
     console.log(url)
     try {
       const res = await fetch(url, {
@@ -23,6 +24,7 @@
       const jsonRes = await res.json();
       console.log(jsonRes)
       newRoute = jsonRes.url;
+      step = parseInt(jsonRes.step, 10) + 1;
       // return jsonRes.url;
     } catch (err) {
       console.log(err);
