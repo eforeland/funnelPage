@@ -107,7 +107,8 @@
     if (urlFunnelIDMatches) return urlFunnelIDMatches;
   }
 
-  function interceptClick() {
+  function interceptClick(event) {
+    event.preventDefault();
     console.log(pending.length, newRoute)
     // if (pending.length) return
     if (newRoute) {
