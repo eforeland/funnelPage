@@ -6,7 +6,7 @@
   let funnelID;
   let urlQuery;
   let newRoute;
-  const step;
+  let step;
 
   async function getRoute() {
     // call API to get routing URL
