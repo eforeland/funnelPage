@@ -13,7 +13,8 @@
   v.async=!0;v.src="warpdrive.js";
   r.head.appendChild(v)}(window,document,'wrpdv');
 
-  warpdrive('config', 'get.rubix.click', 'testID');
+  warpdrive('config', 'interceptor', {type: 'click', selectors: ['#warpdrive', '.warpdrive']});
+  warpdrive('route', window.location.host, window.location.search);
 </script>
 </body>
 </html>
