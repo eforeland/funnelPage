@@ -11,6 +11,7 @@
   async function getRoute() {
     // call API to get routing URL
     step = urlQuery.get('step') || 0;
+    console.log('step in query: ', urlQuery.get('step');
     const url = 'https://dev-traffic.rubix.click/api/'
     + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step;
     console.log(url)
