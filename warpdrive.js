@@ -10,8 +10,9 @@
 
   async function getRoute() {
     // call API to get routing URL
+    step = urlQuery.get('step') || 0;
     const url = 'https://dev-traffic.rubix.click/api/'
-    + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + (step || 0);
+    + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step;
     console.log(url)
     try {
       const res = await fetch(url, {
@@ -24,8 +25,6 @@
       const jsonRes = await res.json();
       console.log(jsonRes)
       newRoute = jsonRes.url;
-      step = parseInt(jsonRes.step, 10) + 1;
-      // return jsonRes.url;
     } catch (err) {
       console.log(err);
     }
@@ -111,14 +110,13 @@
 
   function interceptClick(event) {
     event.preventDefault();
-    console.log(pending.length, newRoute)
-    // if (pending.length) return
     if (newRoute) {
       window.location.href = newRoute;
     }
   }
 
-  function interceptRedirect() {
+  function interceptRedirect(event) {
+    event.preventDefault();
     if (newRoute) {
       window.location.href = newRoute;
     }
@@ -129,13 +127,10 @@
 
     if (type === 'click') {
       if (interceptor.selectors.length) {
-        console.log(interceptor.selectors);
         interceptor.selectors.forEach(selector => {
           const elements = document.querySelectorAll(selector)
-          console.log(elements);
           elements.forEach(e => {
             e.addEventListener("click", interceptClick);
-            console.log(e);
           });
         });
       } else {
@@ -161,26 +156,20 @@
   }
 
   async function handleRouting(args) {
-//     urlQuery = new Proxy(new URLSearchParams(window.location.search), {
-//       get: (searchParams, prop) => searchParams.get(prop),
-//     });
-    
     urlQuery = new URLSearchParams(window.location.search);
-    const warproute = urlQuery.get('warproute');
-//     if (!warpdriveID) return;
+    if (!urlQuery.get('warproute')) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
     funnelID = getFunnelID();
-    console.log(visitID, visitorID)
     if (!visitID || !visitorID || visitID === 'undefined' || visitorID === 'undefined') {
       const res = await recoverVisitor();
-      console.log(res)
+      console.log('recover visitor res: ', res)
       visitorID = res.visitorID;
       visitID = res.visitID;
     }
+    console.log('visit: ', visitID, 'visitor: ', visitorID);
     setLocalStorage();
     setCookieDomain();
-    console.log('before getroute');
     await getRoute();
     console.log('after get route', newRoute);
   }
@@ -201,7 +190,6 @@
       handleConfig(pending);
       await handleRouting();
     }
-    console.log('new route: ', newRoute);
   }
   
   async function processQueue(queue) {
@@ -213,3 +201,4 @@
   window.warpdrive = async function () { await handleAPI(arguments); };
   await processQueue(window.wrpdv);
 }();
+
