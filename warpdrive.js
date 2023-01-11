@@ -28,6 +28,7 @@
       newRoute = jsonRes.url;
       if (jsonRes.visitorId !== visitorID) {
         console.log('visitor id did not match');
+        console.log('pixel visitor: ', visitorID, 'res visitorID: ', jsonRes.visitorID);
         visitorID = jsonRes.visitorID;
         setLocalStorage();
         setCookieDomain();
