@@ -26,8 +26,13 @@
       const jsonRes = await res.json();
       console.log(jsonRes)
       newRoute = jsonRes.url;
-      if (jsonRes.visitorId !== visitorID) visitorID = jsonRes.visitorID;
-      if (jsonRes.visitId !== visitID) visitID = jsonRes.visitID;
+      if (jsonRes.visitorId !== visitorID || jsonRes.visitId !== visitID) {
+        console.log('ids did not match);
+        visitorID = jsonRes.visitorID;
+        visitID = jsonRes.visitID;
+        setLocalStorage();
+        setCookieDomain();
+      }
     } catch (err) {
       console.log(err);
     }
@@ -163,6 +168,7 @@
     if (!urlQuery.get('warproute')) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
+    console.log('handle routing visitorID: ', visitorID);
     funnelID = getFunnelID();
     if (!visitID || !visitorID || visitID === 'undefined' || visitorID === 'undefined') {
       const res = await recoverVisitor();
