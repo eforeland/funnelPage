@@ -27,7 +27,7 @@
       console.log(jsonRes)
       newRoute = jsonRes.url;
       if (jsonRes.visitorId !== visitorID || jsonRes.visitId !== visitID) {
-        console.log('ids did not match);
+        console.log('ids did not match');
         visitorID = jsonRes.visitorID;
         visitID = jsonRes.visitID;
         setLocalStorage();
