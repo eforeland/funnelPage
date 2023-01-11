@@ -26,6 +26,8 @@
       const jsonRes = await res.json();
       console.log(jsonRes)
       newRoute = jsonRes.url;
+      if (jsonRes.visitorId !== visitorID) visitorID = jsonRes.visitorID;
+      if (jsonRes.visitId !== visitID) visitID = jsonRes.visitID;
     } catch (err) {
       console.log(err);
     }
