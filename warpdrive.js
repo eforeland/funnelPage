@@ -81,7 +81,7 @@
   function setCookies(domain) {
     const expires = new Date(Date.now() + 30 * 864e5);
     document.cookie = "WRPDRV_VISITOR="
-      + visitID 
+      + visitorID 
       + '; expires=' 
       + expires.toUTCString() 
       + '; path=/; domain=' 
