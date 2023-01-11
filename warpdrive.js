@@ -26,13 +26,13 @@
       const jsonRes = await res.json();
       console.log(jsonRes)
       newRoute = jsonRes.url;
-      if (jsonRes.visitorId !== visitorID || jsonRes.visitId !== visitID) {
-        console.log('ids did not match');
+      if (jsonRes.visitorId !== visitorID) {
+        console.log('visitor id did not match');
         visitorID = jsonRes.visitorID;
-        visitID = jsonRes.visitID;
         setLocalStorage();
         setCookieDomain();
       }
+      if (jsonRes.visitID !== visitID) console.log('visitID did not match');
     } catch (err) {
       console.log(err);
     }
@@ -51,7 +51,7 @@
         }
       });
       const jsonRes = await res.json();
-      console.log(jsonRes)
+      console.log('recover visitor called. res: ', jsonRes)
       return jsonRes;
     } catch (err) {
       console.log(err);
@@ -168,7 +168,6 @@
     if (!urlQuery.get('warproute')) return;
     visitID = getVisitID();
     visitorID = getVisitorID();
-    console.log('handle routing visitorID: ', visitorID);
     funnelID = getFunnelID();
     if (!visitID || !visitorID || visitID === 'undefined' || visitorID === 'undefined') {
       const res = await recoverVisitor();
