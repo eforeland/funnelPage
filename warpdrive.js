@@ -10,7 +10,7 @@
 
   async function getRoute() {
     // call API to get routing URL
-    step = parseInt(urlQuery.get('step'), 10) || 1;
+    step = parseInt(urlQuery.get('step'), 10) || 0;
     console.log('step in query: ', urlQuery.get('step'));
     const url = 'https://dev-traffic.rubix.click/api/'
     + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step;
