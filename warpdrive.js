@@ -7,6 +7,7 @@
   let urlQuery;
   let newRoute;
   let step;
+  let redirect;
 
   async function getRoute() {
     // call API to get routing URL
@@ -25,6 +26,7 @@
       });
       const jsonRes = await res.json();
       console.log(jsonRes)
+      redirect = jsonRes.redirect || null;
 
       newRoute = jsonRes.url;
       if (jsonRes.visitorId !== visitorID) {
@@ -181,6 +183,7 @@
     setLocalStorage();
     setCookieDomain();
     await getRoute();
+    if (redirect) window.location.href = redirect;
     console.log('after get route', newRoute);
   }
   
