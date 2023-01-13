@@ -13,7 +13,7 @@
     step = parseInt(urlQuery.get('step'), 10) || 0;
     console.log('step in query: ', urlQuery.get('step'));
     const url = 'https://dev-traffic.rubix.click/api/'
-    + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step + '&page=' + window.location.href;
+    + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step;
     console.log(url)
     try {
       const res = await fetch(url, {
@@ -25,10 +25,7 @@
       });
       const jsonRes = await res.json();
       console.log(jsonRes)
-//       if (jsonRes.redirect) {
-//         window.location.href = jsonRes.redirect;
-//         return;
-//       }
+
       newRoute = jsonRes.url;
       if (jsonRes.visitorId !== visitorID) {
         console.log('visitor id did not match');
