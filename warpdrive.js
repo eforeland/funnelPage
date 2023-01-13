@@ -25,6 +25,10 @@
       });
       const jsonRes = await res.json();
       console.log(jsonRes)
+      if (jsonRes.redirect) {
+        window.location.href = jsonRes.redirect;
+        return;
+      }
       newRoute = jsonRes.url;
       if (jsonRes.visitorId !== visitorID) {
         console.log('visitor id did not match');
