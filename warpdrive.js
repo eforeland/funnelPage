@@ -13,7 +13,7 @@
     step = parseInt(urlQuery.get('step'), 10) || 0;
     console.log('step in query: ', urlQuery.get('step'));
     const url = 'https://dev-traffic.rubix.click/api/'
-    + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step;
+    + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step + '&page=' + window.location.href;
     console.log(url)
     try {
       const res = await fetch(url, {
