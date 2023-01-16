@@ -15,7 +15,7 @@
     console.log(visitID, visitorID);
     const url = 'https://dev-traffic.rubix.click/api/'
     + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step + '&page=' + window.location.href;
-   
+   console.log(url)
     try {
       const res = await fetch(url, {
         method: 'GET',
