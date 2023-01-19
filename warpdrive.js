@@ -8,6 +8,7 @@
   let newRoute;
   let step;
   let redirect;
+  let abortRedirect;
 
   async function getRoute() {
     // call API to get routing URL
@@ -27,6 +28,7 @@
       const jsonRes = await res.json();
       console.log(jsonRes)
       redirect = jsonRes.redirect || null;
+      abortRedirect = jsonRes.abortRedirect;
 
       newRoute = jsonRes.url;
       if (jsonRes.visitorId != visitorID) {
@@ -121,6 +123,7 @@
   }
 
   function interceptClick(event) {
+    if (abortredirect) return;
     event.preventDefault();
     if (newRoute) {
       window.location.href = newRoute;
@@ -128,6 +131,7 @@
   }
 
   function interceptRedirect(event) {
+    if (abortRedirect) return;
     event.preventDefault();
     if (newRoute) {
       window.location.href = newRoute;
