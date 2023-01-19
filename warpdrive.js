@@ -31,14 +31,13 @@
       abortRedirect = jsonRes.abortRedirect;
 
       newRoute = jsonRes.url;
-      if (jsonRes.visitorId != visitorID) {
+      if (jsonRes.visitorID != visitorID) {
         console.log('visitor id did not match');
         console.log('pixel visitor: ', visitorID, 'res visitorID: ', jsonRes.visitorID);
         visitorID = jsonRes.visitorID;
         setLocalStorage();
         setCookieDomain();
       }
-      if (jsonRes.visitID !== visitID) console.log('visitID did not match');
     } catch (err) {
       console.log(err);
     }
