@@ -123,7 +123,7 @@
   }
 
   function interceptClick(event) {
-    if (abortredirect) return;
+    if (abortRedirect) return;
     event.preventDefault();
     if (newRoute) {
       window.location.href = newRoute;
