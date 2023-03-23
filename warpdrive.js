@@ -1,6 +1,6 @@
 !async function () {
   let pending = [];
-  const domain = '';
+  let domain = '';
   let visitID;
   let visitorID;
   let funnelID;
@@ -13,10 +13,9 @@
   async function getRoute() {
     // call API to get routing URL
     step = parseInt(urlQuery.get('step'), 10) || 0;
-    console.log(visitID, visitorID);
-    const url = 'https://dev-traffic.rubix.click/api/'
+    const url = domain + '/api/'
     + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step + '&page=' + window.location.href.split('?')[0];
-   console.log(url)
+
     try {
       const res = await fetch(url, {
         method: 'GET',
@@ -26,14 +25,10 @@
         }
       });
       const jsonRes = await res.json();
-      console.log(jsonRes)
       redirect = jsonRes.redirect || null;
-      abortRedirect = jsonRes.abortRedirect;
-
+      abortRedirect = jsonRes.abortRedirect || false;
       newRoute = jsonRes.url;
       if (jsonRes.visitorID != visitorID) {
-        console.log('visitor id did not match');
-        console.log('pixel visitor: ', visitorID, 'res visitorID: ', jsonRes.visitorID);
         visitorID = jsonRes.visitorID;
         setLocalStorage();
         setCookieDomain();
@@ -45,7 +40,7 @@
 
   async function recoverVisitor() {
     // API call to validate visitorID or create new one
-    const url = 'https://dev-traffic.rubix.click/recoverVisitor'
+    const url = domain + '/recoverVisitor'
     + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
     try {
       const res = await fetch(url, {
@@ -56,7 +51,6 @@
         }
       });
       const jsonRes = await res.json();
-      console.log('recover visitor called. res: ', jsonRes)
       return jsonRes;
     } catch (err) {
       console.log(err);
@@ -107,7 +101,7 @@
   }
 
   function setCookieDomain(cookieDomain) {
-    //set cookie on the broadest possible domain
+    // set cookie on the broadest possible domain
     const splitHostname = window.location.hostname.split('.');
     for (let i = splitHostname.length - 2; i >= 0; i--) {
       let currentCookieHost = splitHostname.slice(i).join('.');
@@ -145,13 +139,13 @@
         interceptor.selectors.forEach(selector => {
           const elements = document.querySelectorAll(selector)
           elements.forEach(e => {
-            e.addEventListener("click", interceptClick);
+            e.addEventListener('click', interceptClick);
           });
         });
       } else {
-        const elements = document.querySelectorAll("warplink");
+        const elements = document.querySelectorAll('warplink');
         elements.forEach(e => {
-          e.addEventListener("click", interceptClick());
+          e.addEventListener('click', interceptClick());
         });
       }
     }
@@ -162,12 +156,16 @@
   }
 
   function handleConfig(args) {
-     // console.log('config', args);
     switch (args[1]) {
-      case 'domain': domain = args[2]
-      case 'interceptor': updateInterceptor(args[2])
+      case 'domain': {
+        domain = args[2];
+        break;
+      } 
+      case 'interceptor': {
+        updateInterceptor(args[2]);
+        break;
+      }
     }
-  
   }
 
   async function handleRouting(args) {
@@ -177,17 +175,15 @@
     visitorID = getVisitorID();
     funnelID = getFunnelID();
     if (!visitID || !visitorID || visitID === 'undefined' || visitorID === 'undefined') {
+      console.log(visitID, visitorID);
       const res = await recoverVisitor();
-      console.log('recover visitor res: ', res)
       visitorID = res.visitorID;
       visitID = res.visitID;
     }
-    console.log('visit: ', visitID, 'visitor: ', visitorID);
     setLocalStorage();
     setCookieDomain();
     await getRoute();
     if (redirect) window.location.href = redirect;
-    console.log('after get route', newRoute);
   }
   
   function handleConfig(queue) {
@@ -201,13 +197,12 @@
     if (args[0] === 'config') {
       pending.push(args);
       return;
-    }
-    else {
+    } else {
       handleConfig(pending);
       await handleRouting();
     }
   }
-  
+
   async function processQueue(queue) {
     while (queue.length > 0) {
       await handleAPI(queue.shift());
@@ -217,4 +212,3 @@
   window.warpdrive = async function () { await handleAPI(arguments); };
   await processQueue(window.wrpdv);
 }();
-
