@@ -7,14 +7,14 @@
   let urlQuery;
   let newRoute;
   let step;
-  let redirect;
+  let redirect = false;
   let abortRedirect;
 
   async function getRoute() {
     // call API to get routing URL
     step = parseInt(urlQuery.get('step'), 10) || 0;
-    const url = domain + '/api/'
-    + funnelID + '?visitID=' + visitID + '&visitorID=' + visitorID + '&step=' + step + '&page=' + window.location.href.split('?')[0];
+    page = URIComponentEncoded(window.location.href.split('?')[0]);
+    const url = `https://${domain}/api/${funnelID}?visitID=${visitID}&visitorID=${visitorID}&step=${step}&page=${page}`;
 
     try {
       const res = await fetch(url, {
@@ -40,8 +40,7 @@
 
   async function recoverVisitor() {
     // API call to validate visitorID or create new one
-    const url = domain + '/recoverVisitor'
-    + '?visitID=' + visitID + '&' + 'visitorID=' + visitorID;
+    const url = `https://${domain}/recoverVisitor?visitID=${visitID}&visitorID=${visitorID}`;
     try {
       const res = await fetch(url, {
         method: 'GET',
@@ -57,25 +56,14 @@
     }
   }
 
-  function getVisitorID() {
-    const urlVisitorIDMatches = urlQuery.get('visitorID');
-    if (urlVisitorIDMatches) return urlVisitorIDMatches;
+  function getID(id, regex) {
+    const urlIDMatches = urlQuery.get(id);
+    if (urlIDMatches) return urlIDMatches;
   
-    const cookieMatches = document.cookie.match(/(?:^|; ?)WRPDRV_VISITOR=([^;]+)/);
+    const cookieMatches = document.cookie.match(regex);
     if (cookieMatches) return cookieMatches[1];
   
-    const storageMatches = localStorage.getItem('visitorID');
-    if (storageMatches) return storageMatches;
-  }
-  
-  function getVisitID() {
-    const urlVisitIDMatches = urlQuery.get('visitID');
-    if (urlVisitIDMatches) return urlVisitIDMatches;
-  
-    const cookieMatches = document.cookie.match(/(?:^|; ?)WRPDRV_VISIT=([^;]+)/);
-    if (cookieMatches) return cookieMatches[1];
-  
-    const storageMatches = localStorage.getItem('visitID');
+    const storageMatches = localStorage.getItem(id);
     if (storageMatches) return storageMatches;
   }
 
@@ -84,28 +72,18 @@
     localStorage.setItem('visitID', visitID);
   }
 
-  function setCookies(domain) {
+  function setCookies(domain, key, value) {
     const expires = new Date(Date.now() + 30 * 864e5);
-    document.cookie = "WRPDRV_VISITOR="
-      + visitorID 
-      + '; expires=' 
-      + expires.toUTCString() 
-      + '; path=/; domain=' 
-      + domain;
-    document.cookie = "WRPDRV_VISIT="
-      + visitID 
-      + '; expires=' 
-      + expires.toUTCString() 
-      + '; path=/; domain=' 
-      + domain;
+    document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
   }
 
-  function setCookieDomain(cookieDomain) {
-    // set cookie on the broadest possible domain
+  function setCookieDomain() {
+    //set cookie on the broadest possible domain
     const splitHostname = window.location.hostname.split('.');
     for (let i = splitHostname.length - 2; i >= 0; i--) {
       let currentCookieHost = splitHostname.slice(i).join('.');
-      setCookies(currentCookieHost)
+      setCookies(currentCookieHost, 'WRPDRV_VISITOR', visitorID);
+      setCookies(currentCookieHost, 'WRPDRV_VISIT', visitID);
       if (document.cookie.indexOf('RBX_VISIT='+visitID) !== -1) break;
     }
   }
@@ -115,15 +93,7 @@
     if (urlFunnelIDMatches) return urlFunnelIDMatches;
   }
 
-  function interceptClick(event) {
-    if (abortRedirect) return;
-    event.preventDefault();
-    if (newRoute) {
-      window.location.href = newRoute;
-    }
-  }
-
-  function interceptRedirect(event) {
+  function intercept(event) {
     if (abortRedirect) return;
     event.preventDefault();
     if (newRoute) {
@@ -132,26 +102,26 @@
   }
 
   function updateInterceptor(interceptor) {
-    const type = interceptor.type;
+    const type = interceptor.type.toLowerCase().trim();
 
     if (type === 'click') {
       if (interceptor.selectors.length) {
         interceptor.selectors.forEach(selector => {
           const elements = document.querySelectorAll(selector)
           elements.forEach(e => {
-            e.addEventListener('click', interceptClick);
+            e.addEventListener('click', intercept);
           });
         });
       } else {
-        const elements = document.querySelectorAll('warplink');
+        const elements = document.querySelectorAll('.warplink');
         elements.forEach(e => {
-          e.addEventListener('click', interceptClick());
+          e.addEventListener('click', intercept);
         });
       }
     }
 
-    if (type === 'onBeforeUnload') {
-      window.onbeforeunload = interceptRedirect();
+    if (type === 'unload') {
+      window.addEventListener('beforeunload', intercept)
     }
   }
 
@@ -169,20 +139,24 @@
   }
 
   async function handleRouting(args) {
-    urlQuery = new URLSearchParams(window.location.search);
-    if (!urlQuery.get('warproute')) return;
-    visitID = getVisitID();
-    visitorID = getVisitorID();
-    funnelID = getFunnelID();
-    if (!visitID || !visitorID) {
-      const res = await recoverVisitor();
-      visitorID = res.visitorID;
-      visitID = res.visitID;
+    try {
+      urlQuery = new URLSearchParams(window.location.search);
+      if (!urlQuery.has('warproute')) return;
+      visitID = getID('visitID', /(?:^|; ?)WRPDRV_VISIT=([^;]+)/);
+      visitorID = getID('visitorID', /(?:^|; ?)WRPDRV_VISITOR=([^;]+)/);
+      funnelID = getFunnelID();
+      if (!visitID || !visitorID) {
+        const res = await recoverVisitor();
+        visitorID = res?.visitorID;
+        visitID = res?.visitID;
+      }
+      setLocalStorage();
+      setCookieDomain();
+      await getRoute();
+      if (redirect) window.location.href = redirect;
+    } catch (err)  {
+      console.log(err)
     }
-    setLocalStorage();
-    setCookieDomain();
-    await getRoute();
-    if (redirect) window.location.href = redirect;
   }
   
   function handleConfig(queue) {
