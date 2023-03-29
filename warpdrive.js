@@ -13,7 +13,7 @@
   async function getRoute() {
     // call API to get routing URL
     step = parseInt(urlQuery.get('step'), 10) || 0;
-    page = URIComponentEncoded(window.location.href.split('?')[0]);
+    page = encodeURIComponent(window.location.href.split('?')[0]);
     const url = `https://${domain}/api/${funnelID}?visitID=${visitID}&visitorID=${visitorID}&step=${step}&page=${page}`;
 
     try {
