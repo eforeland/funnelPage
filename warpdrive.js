@@ -1,5 +1,4 @@
 !async function () {
-  let pending = [];
   let domain = '';
   let visitID;
   let visitorID;
@@ -58,11 +57,11 @@
 
   function getID(id, regex) {
     const urlIDMatches = urlQuery.get(id);
-    if (urlIDMatches) return urlIDMatches;
+    if (urlIDMatches !== null) return urlIDMatches;
   
     const cookieMatches = document.cookie.match(regex);
     if (cookieMatches) return cookieMatches[1];
-  
+
     const storageMatches = localStorage.getItem(id);
     if (storageMatches) return storageMatches;
   }
@@ -75,6 +74,17 @@
   function setCookies(domain, key, value) {
     const expires = new Date(Date.now() + 30 * 864e5);
     document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
+  }
+
+  function setStorage(domain, key, value) {
+    const expires = new Date(Date.now() + 30 * 864e5);
+    document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
+    localStorage.setItem(key, value);
+    browser.cookie.set({
+      name: key,
+      domain: domain,
+      expirationDate: expires
+    })
   }
 
   function setCookieDomain() {
@@ -138,7 +148,7 @@
     }
   }
 
-  async function handleRouting(args) {
+  async function handleRouting() {
     try {
       urlQuery = new URLSearchParams(window.location.search);
       if (!urlQuery.has('warproute')) return;
@@ -167,12 +177,15 @@
   }
 
   async function handleAPI(args) {
-    if (args[0] === 'config') {
-      pending.push(args);
-      return;
-    } else {
-      handleConfig(pending);
-      await handleRouting();
+    switch (args[0]) {
+      case 'config':
+        handleConfig(args);
+        break;
+      case 'route':
+        await handleRouting();
+        break;
+      default:
+        // Do Nothing
     }
   }
 
@@ -184,4 +197,5 @@
 
   window.warpdrive = async function () { await handleAPI(arguments); };
   await processQueue(window.wrpdv);
+  handleRouting();
 }();
