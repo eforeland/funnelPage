@@ -171,10 +171,9 @@
   }
   
   function handleConfig(queue) {
-    queue.forEach(args => {
-      if (args[1] === 'domain') domain = args[2]
-      if (args[1] === 'interceptor') updateInterceptor(args[2])
-    })
+    if (args[1] === 'domain') domain = args[2];
+    else if (args[1] === 'interceptor') updateInterceptor(args[2]);
+    else return;
   }
 
   async function handleAPI(args) {
