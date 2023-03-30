@@ -59,7 +59,7 @@
     const urlIDMatches = urlQuery.get(id);
     if (urlIDMatches !== null) return urlIDMatches;
   
-   const cookieMatches = browser.cookies.get({
+   const cookieMatches = document.cookies.get({
       name: id,
       url: domain,
     });
@@ -72,7 +72,7 @@
   function setStorage(key, value) {
     const expires = new Date(Date.now() + 30 * 864e5);
     localStorage.setItem(key, { value, expiry: expires });
-    browser.cookies.set({
+    document.cookies.set({
       name: key,
       value: value,
       url: domain,
