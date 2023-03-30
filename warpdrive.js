@@ -62,7 +62,7 @@
     if (urlIDMatches !== null) return urlIDMatches;
   
     const cookieMatches = document.cookie.match(regex);
-    console.log(cookieMathes)
+    console.log(cookieMatches)
     if (cookieMatches) return cookieMatches[1];
 
     const storageMatches = localStorage.getItem(id);
