@@ -59,7 +59,10 @@
     const urlIDMatches = urlQuery.get(id);
     if (urlIDMatches !== null) return urlIDMatches;
   
-    const cookieMatches = document.cookie.match(regex);
+   const cookieMatches = browser.cookie.get({
+      name: id,
+      url: domain,
+    });
     if (cookieMatches) return cookieMatches[1];
 
     const storageMatches = localStorage.getItem(id);
