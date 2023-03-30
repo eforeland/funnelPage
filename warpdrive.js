@@ -55,15 +55,14 @@
     }
   }
 
-  function getID(id) {
-    console.log(browser)
+  function getID(id, regex) {
+    const storageMatches = localStorage.getItem(id);
+    console.log('local storage: ', storageMatches);
     const urlIDMatches = urlQuery.get(id);
     if (urlIDMatches !== null) return urlIDMatches;
   
-   const cookieMatches = browser.cookies.get({
-      name: id,
-      url: domain,
-    });
+    const cookieMatches = document.cookie.match(regex);
+    console.log(cookieMathes)
     if (cookieMatches) return cookieMatches[1];
 
     const storageMatches = localStorage.getItem(id);
@@ -73,12 +72,7 @@
   function setStorage(key, value) {
     const expires = new Date(Date.now() + 30 * 864e5);
     localStorage.setItem(key, { value, expiry: expires });
-    browser.cookies.set({
-      name: key,
-      value: value,
-      url: domain,
-      expirationDate: expires
-    });
+    document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
   }
 
   function getFunnelID() {
