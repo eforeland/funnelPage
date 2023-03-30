@@ -146,6 +146,8 @@
         updateInterceptor(args[2]);
         break;
       }
+      default:
+        break;
     }
   }
 
@@ -168,12 +170,6 @@
     } catch (err)  {
       console.log(err)
     }
-  }
-  
-  function handleConfig(queue) {
-    if (args[1] === 'domain') domain = args[2];
-    else if (args[1] === 'interceptor') updateInterceptor(args[2]);
-    else return;
   }
 
   async function handleAPI(args) {
