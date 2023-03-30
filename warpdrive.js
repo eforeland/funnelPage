@@ -13,7 +13,6 @@
     // call API to get routing URL
     step = parseInt(urlQuery.get('step'), 10) || 0;
     page = encodeURIComponent(window.location.href.split('?')[0]);
-    console.log(page);
     const url = `https://${domain}/api/${funnelID}?visitID=${visitID}&visitorID=${visitorID}&step=${step}&page=${page}`;
 
     try {
@@ -30,8 +29,8 @@
       newRoute = jsonRes.url;
       if (jsonRes.visitorID != visitorID) {
         visitorID = jsonRes.visitorID;
-        setLocalStorage();
-        setCookieDomain();
+        setStorage('WRPDRV_VISITOR', visitorID);
+        setStorage('WRPDRV_VISIT', visitID);
       }
     } catch (err) {
       console.log(err);
@@ -56,7 +55,7 @@
     }
   }
 
-  function getID(id, regex) {
+  function getID(id) {
     const urlIDMatches = urlQuery.get(id);
     if (urlIDMatches !== null) return urlIDMatches;
   
@@ -67,36 +66,15 @@
     if (storageMatches) return storageMatches;
   }
 
-  function setLocalStorage() {
-    localStorage.setItem('visitorID', visitorID);
-    localStorage.setItem('visitID', visitID);
-  }
-
-  function setCookies(domain, key, value) {
+  function setStorage(key, value) {
     const expires = new Date(Date.now() + 30 * 864e5);
-    document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
-  }
-
-  function setStorage(domain, key, value) {
-    const expires = new Date(Date.now() + 30 * 864e5);
-    document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
-    localStorage.setItem(key, value);
+    localStorage.setItem(key, { value, expiry: expires });
     browser.cookie.set({
       name: key,
-      domain: domain,
+      value: value,
+      url: domain,
       expirationDate: expires
-    })
-  }
-
-  function setCookieDomain() {
-    //set cookie on the broadest possible domain
-    const splitHostname = window.location.hostname.split('.');
-    for (let i = splitHostname.length - 2; i >= 0; i--) {
-      let currentCookieHost = splitHostname.slice(i).join('.');
-      setCookies(currentCookieHost, 'WRPDRV_VISITOR', visitorID);
-      setCookies(currentCookieHost, 'WRPDRV_VISIT', visitID);
-      if (document.cookie.indexOf('RBX_VISIT='+visitID) !== -1) break;
-    }
+    });
   }
 
   function getFunnelID() {
@@ -147,7 +125,7 @@
         break;
       }
       default:
-        break;
+        // Do Nothing;
     }
   }
 
@@ -163,8 +141,8 @@
         visitorID = res?.visitorID;
         visitID = res?.visitID;
       }
-      setLocalStorage();
-      setCookieDomain();
+      setStorage('WRPDRV_VISITOR', visitorID);
+      setStorage('WRPDRV_VISIT', visitID);
       await getRoute();
       if (redirect) window.location.href = redirect;
     } catch (err)  {
