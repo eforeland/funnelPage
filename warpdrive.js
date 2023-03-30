@@ -56,8 +56,8 @@
   }
 
   function getID(id, regex) {
-    const storageMatches = localStorage.getItem(id);
-    console.log('local storage: ', storageMatches);
+    const test = localStorage.getItem(id);
+    console.log('local storage: ', test);
     const urlIDMatches = urlQuery.get(id);
     if (urlIDMatches !== null) return urlIDMatches;
   
