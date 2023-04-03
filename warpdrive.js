@@ -71,8 +71,14 @@
   }
 
   function setStorage(key, value) {
+    const now = new Date()
+    const item = {
+      value: value,
+      expiry: now.getTime() + 10000,
+    }
+		localStorage.setItem(key, JSON.stringify(item))
     const expires = new Date(Date.now() + 30 * 864e5);
-    localStorage.setItem(key, { value, expiry: expires });
+    // localStorage.setItem(key, { value, expiry: expires });
     document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
   }
 
