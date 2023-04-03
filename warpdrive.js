@@ -65,8 +65,12 @@
 
     const storageMatches = localStorage.getItem(id);
     const storageItem = JSON.parse(storageMatches);
-    if (storageItem && now.getTime() > storageItem.expiry) localStorage.removeItem(id);
-    else return storageItem.value;
+    if (storageItem && now.getTime() > storageItem.expiry) {
+      localStorage.removeItem(id);
+      return;
+    }
+    else if (storageItem) return storageItem.value;
+    else return;
   }
 
   function setStorage(key, value) {
