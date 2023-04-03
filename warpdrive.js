@@ -57,7 +57,7 @@
 
   function getID(id, regex) {
     const test = localStorage.getItem(id);
-    console.log('local storage: ', JSON.parse(test));
+    console.log('local storage: ', JSON.parse(test), test);
     console.log('cookie:', document.cookie.match(regex));
     const urlIDMatches = urlQuery.get(id);
     if (urlIDMatches !== null) return urlIDMatches;
@@ -74,9 +74,9 @@
     const now = new Date()
     const item = {
       value: value,
-      expiry: now.getTime() + 10000,
+      expiry: now.getTime() + 100000,
     }
-    localStorage.setItem(key, JSON.stringify(item))
+    localStorage.setItem(key, JSON.stringify(item));
     const expires = new Date(Date.now() + 30 * 864e5);
     // localStorage.setItem(key, { value, expiry: expires });
     document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
