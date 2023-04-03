@@ -56,31 +56,28 @@
   }
 
   function getID(id, regex) {
-    const test = localStorage.getItem(id);
-    console.log('local storage: ', JSON.parse(test), test);
-    console.log('cookie:', document.cookie.match(regex));
+    const now = new Date();
     const urlIDMatches = urlQuery.get(id);
     if (urlIDMatches !== null) return urlIDMatches;
   
     const cookieMatches = document.cookie.match(regex);
-    console.log(cookieMatches)
     if (cookieMatches) return cookieMatches[1];
 
     const storageMatches = localStorage.getItem(id);
-    if (storageMatches) return storageMatches;
+    const storageItem = JSON.parse(stoageMatches);
+    if (now.getTime() > storageItem.expiry) localStorage.removeItem(id);
+    else return storageItem.value;
   }
 
   function setStorage(key, value) {
-    console.log('test');
-    const now = new Date()
+    const now = new Date();
+    // expiry date just for tempory testing, will update to proper TTL before release
     const item = {
       value: value,
-      expiry: now.getTime() + 100000,
-    }
-    console.log(item);
+      expiry: now.getTime() + 10000,
+    };
     localStorage.setItem(key, JSON.stringify(item));
     const expires = new Date(Date.now() + 30 * 864e5);
-    // localStorage.setItem(key, { value, expiry: expires });
     document.cookie = `${key}=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
   }
 
