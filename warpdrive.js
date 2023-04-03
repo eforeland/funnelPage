@@ -64,7 +64,7 @@
     if (cookieMatches) return cookieMatches[1];
 
     const storageMatches = localStorage.getItem(id);
-    const storageItem = JSON.parse(stoageMatches);
+    const storageItem = JSON.parse(storageMatches);
     if (now.getTime() > storageItem.expiry) localStorage.removeItem(id);
     else return storageItem.value;
   }
