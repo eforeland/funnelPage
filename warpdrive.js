@@ -57,7 +57,7 @@
 
   function getID(id, regex) {
     const test = localStorage.getItem(id);
-    console.log('local storage: ', test);
+    console.log('local storage: ', JSON.parse(test));
     console.log('cookie:', document.cookie.match(regex));
     const urlIDMatches = urlQuery.get(id);
     if (urlIDMatches !== null) return urlIDMatches;
