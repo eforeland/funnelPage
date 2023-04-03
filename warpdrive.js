@@ -145,7 +145,6 @@
         visitorID = res?.visitorID;
         visitID = res?.visitID;
       }
-      console.log('handlerouting');
       setStorage('WRPDRV_VISITOR', visitorID);
       setStorage('WRPDRV_VISIT', visitID);
       await getRoute();
