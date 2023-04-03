@@ -96,25 +96,23 @@
 
   function updateInterceptor(interceptor) {
     const type = interceptor.type.toLowerCase().trim();
+    const selectors = interceptor.selectors.length ? interceptor.selectors : ['.waprlink', '[warplink]'];
 
-    if (type === 'click') {
-      if (interceptor.selectors.length) {
-        interceptor.selectors.forEach(selector => {
+    switch (type) {
+      case 'click': {
+        selectors.forEach(selector => {
           const elements = document.querySelectorAll(selector)
           elements.forEach(e => {
             e.addEventListener('click', intercept);
           });
         });
-      } else {
-        const elements = document.querySelectorAll('.warplink');
-        elements.forEach(e => {
-          e.addEventListener('click', intercept);
-        });
+        break;
       }
-    }
-
-    if (type === 'unload') {
-      window.addEventListener('beforeunload', intercept)
+      case 'unload':
+        window.addEventListener('beforeunload', intercept);
+        break;
+      default:
+        break;
     }
   }
 
