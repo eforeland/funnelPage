@@ -71,11 +71,13 @@
   }
 
   function setStorage(key, value) {
+    console.log('test');
     const now = new Date()
     const item = {
       value: value,
       expiry: now.getTime() + 100000,
     }
+    console.log(item);
     localStorage.setItem(key, JSON.stringify(item));
     const expires = new Date(Date.now() + 30 * 864e5);
     // localStorage.setItem(key, { value, expiry: expires });
